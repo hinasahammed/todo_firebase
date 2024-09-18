@@ -84,7 +84,9 @@ class _HomeViewState extends State<HomeView> {
                         trailing: Wrap(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                HomeViewmodel().showEdit(context, index);
+                              },
                               icon: Icon(
                                 Icons.edit,
                                 color: theme.colorScheme.primary,

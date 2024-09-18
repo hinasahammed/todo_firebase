@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_firebase/res/components/common/custom_button.dart';
 import 'package:todo_firebase/res/components/common/custom_textformfield.dart';
+import 'package:todo_firebase/viewmodel/home_viewmodel.dart';
 
 class AddTaskSheet extends StatefulWidget {
   const AddTaskSheet({super.key});
@@ -15,6 +18,8 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final homeProvider = Provider.of<HomeViewmodel>(context, listen: false);
+
     final size = MediaQuery.sizeOf(context);
     final theme = Theme.of(context);
     return Container(
@@ -43,13 +48,19 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
               fieldName: "Task",
             ),
             const Gap(20),
-            Align(
-              alignment: Alignment.centerRight,
-              child: CustomButton(
-                isIcon: true,
-                icon: Icons.calendar_month,
-                onPressed: () async {},
-                btnText: '',
+            Consumer<HomeViewmodel>(
+              builder: (context, value, child) => Align(
+                alignment: Alignment.centerRight,
+                child: CustomButton(
+                  isIcon: true,
+                  icon: Icons.calendar_month,
+                  onPressed: () {
+                    homeProvider.selectDate(context);
+                  },
+                  btnText: value.selectedDate == null
+                      ? 'Select date'
+                      : DateFormat.yMMMd().format(value.selectedDate!),
+                ),
               ),
             ),
             const Gap(50),
@@ -64,7 +75,9 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                 ),
                 CustomButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      homeProvider.addTask(taskController.text, context);
+                    }
                   },
                   btnText: "Add",
                 )
