@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "699057576920",
+    "project_id": "todify-11303",
+    "storage_bucket": "todify-11303.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699057576920:android:6a192e0a096554f38c30ad",
+        "android_client_info": {
+          "package_name": "com.example.todo_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK9zO3AoJfctnYG92BM11zM_AIA_BfnoE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
