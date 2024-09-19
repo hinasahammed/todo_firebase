@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 class TaskModel {
-  final String taskName;
-  final String date;
-  final bool isCompleted;
+  String? taskName;
+  String? date;
+  bool isCompleted;
 
   TaskModel({
-    required this.taskName,
-    required this.date,
+    this.taskName,
+    this.date,
     this.isCompleted = false,
   });
 
@@ -41,19 +41,20 @@ class TaskModel {
 
   String toJson() => json.encode(toMap());
 
-  factory TaskModel.fromJson(String source) => TaskModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory TaskModel.fromJson(String source) =>
+      TaskModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'TaskModel(taskName: $taskName, date: $date, isCompleted: $isCompleted)';
+  String toString() =>
+      'TaskModel(taskName: $taskName, date: $date, isCompleted: $isCompleted)';
 
   @override
   bool operator ==(covariant TaskModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.taskName == taskName &&
-      other.date == date &&
-      other.isCompleted == isCompleted;
+
+    return other.taskName == taskName &&
+        other.date == date &&
+        other.isCompleted == isCompleted;
   }
 
   @override

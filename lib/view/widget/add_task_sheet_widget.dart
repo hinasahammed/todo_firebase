@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_firebase/res/components/common/custom_button.dart';
 import 'package:todo_firebase/res/components/common/custom_textformfield.dart';
+import 'package:todo_firebase/res/utils/utils.dart';
 import 'package:todo_firebase/viewmodel/home_viewmodel.dart';
 
 class AddTaskSheet extends StatefulWidget {
@@ -22,34 +23,34 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
 
     final size = MediaQuery.sizeOf(context);
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(16),
-      width: size.width,
-      height: size.height,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Text(
-              "Add Task",
-              style: theme.textTheme.titleLarge!.copyWith(
-                color: theme.colorScheme.onSurface,
+    return Consumer<HomeViewmodel>(
+      builder: (context, value, child) => Container(
+        padding: const EdgeInsets.all(16),
+        width: size.width,
+        height: size.height,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Text(
+                "Add Task",
+                style: theme.textTheme.titleLarge!.copyWith(
+                  color: theme.colorScheme.onSurface,
+                ),
               ),
-            ),
-            const Gap(10),
-            CustomTextFormfield(
-              controller: taskController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Enter a task name";
-                }
-                return null;
-              },
-              fieldName: "Task",
-            ),
-            const Gap(20),
-            Consumer<HomeViewmodel>(
-              builder: (context, value, child) => Align(
+              const Gap(10),
+              CustomTextFormfield(
+                controller: taskController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Enter a task name";
+                  }
+                  return null;
+                },
+                fieldName: "Task",
+              ),
+              const Gap(20),
+              Align(
                 alignment: Alignment.centerRight,
                 child: CustomButton(
                   isIcon: true,
@@ -62,31 +63,43 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                       : DateFormat.yMMMd().format(value.selectedDate!),
                 ),
               ),
-            ),
-            const Gap(50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancel"),
-                ),
-                CustomButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      homeProvider.addTask(taskController.text, context);
-                    }
-                  },
-                  btnText: "Add",
-                )
-              ],
-            ),
-            const Gap(20),
-          ],
+              const Gap(50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Cancel"),
+                  ),
+                  CustomButton(
+                    status: value.status,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (value.selectedDate == null) {
+                          Utils().showFlushToast(
+                              context, "Warning", "Select a date");
+                        } else {
+                          homeProvider.addTask(taskController.text, context);
+                        }
+                      }
+                    },
+                    btnText: "Add",
+                  )
+                ],
+              ),
+              const Gap(20),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    taskController.dispose();
   }
 }
