@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_firebase/data/response/status.dart';
 import 'package:todo_firebase/model/task_model.dart';
+import 'package:todo_firebase/res/components/common/custom_button.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
 import 'package:todo_firebase/view/widget/add_task_sheet_widget.dart';
 import 'package:todo_firebase/view/widget/edit_task_widget.dart';
@@ -116,6 +117,51 @@ class HomeViewmodel extends ChangeNotifier {
       ).whenComplete(
         () => changeStatus(Status.completed),
       );
+    } catch (e) {
+      changeStatus(Status.error);
+      if (context.mounted) {
+        Utils().showFlushToast(context, "Error", e.toString());
+      }
+    }
+  }
+
+  void confirmRemoveTask(BuildContext context, String docId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text("Are you want to remove task?"),
+        icon: const Icon(Icons.delete),
+        title: const Text("Remove"),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel")),
+          CustomButton(
+            onPressed: () {
+              removeTask(docId, context);
+              Navigator.pop(context);
+              Utils().showFlushToast(
+                context,
+                "Success",
+                "Removed task successfully",
+              );
+            },
+            btnText: "Remove",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future removeTask(
+    String docId,
+    BuildContext context,
+  ) async {
+    changeStatus(Status.loading);
+    try {
+      await firestore.collection("todo").doc(docId).delete();
     } catch (e) {
       changeStatus(Status.error);
       if (context.mounted) {

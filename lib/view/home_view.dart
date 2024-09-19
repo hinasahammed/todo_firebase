@@ -66,6 +66,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                     confirmDismiss: (direction) async {
+                      HomeViewmodel().confirmRemoveTask(context, data.id);
                       return null;
                     },
                     key: ValueKey(index),

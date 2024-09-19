@@ -19,7 +19,7 @@ class _EditTaskDialogueState extends State<EditTaskDialogue> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.sizeOf(context);
-
+    final homeProvider = Provider.of<HomeViewmodel>(context, listen: false);
     return Consumer<HomeViewmodel>(
       builder: (context, value, child) => Container(
         height: size.height * .3,
@@ -53,7 +53,7 @@ class _EditTaskDialogueState extends State<EditTaskDialogue> {
                 CustomButton(
                   status: value.status,
                   onPressed: () {
-                    HomeViewmodel().updateTask(
+                    homeProvider.updateTask(
                       widget.docId,
                       taskController.text,
                       context,
