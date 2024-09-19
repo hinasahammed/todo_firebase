@@ -102,7 +102,7 @@ class _HomeViewState extends State<HomeView> {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  HomeViewmodel().showEdit(context, index);
+                                  HomeViewmodel().showEdit(context, data.id);
                                 },
                                 icon: Icon(
                                   Icons.edit,

@@ -28,13 +28,13 @@ class HomeViewmodel extends ChangeNotifier {
     );
   }
 
-  void showEdit(BuildContext context, int index) {
+  void showEdit(BuildContext context, String docId) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             content: EditTaskDialogue(
-              index: index,
+              docId: docId,
             ),
           );
         });
@@ -98,11 +98,29 @@ class HomeViewmodel extends ChangeNotifier {
     }
   }
 
-  Future updateTask(String docId, String newTaskname) async {
+  Future updateTask(
+    String docId,
+    String newTaskname,
+    BuildContext context,
+  ) async {
+    changeStatus(Status.loading);
     try {
       await firestore.collection("todo").doc(docId).update({
         "taskName": newTaskname,
-      });
-    } catch (e) {}
+      }).then(
+        (value) {
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+        },
+      ).whenComplete(
+        () => changeStatus(Status.completed),
+      );
+    } catch (e) {
+      changeStatus(Status.error);
+      if (context.mounted) {
+        Utils().showFlushToast(context, "Error", e.toString());
+      }
+    }
   }
 }
