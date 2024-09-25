@@ -15,6 +15,7 @@ class EditTaskDialogue extends StatefulWidget {
 
 class _EditTaskDialogueState extends State<EditTaskDialogue> {
   final taskController = TextEditingController();
+  final descController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -41,6 +42,11 @@ class _EditTaskDialogueState extends State<EditTaskDialogue> {
               controller: taskController,
               fieldName: "Task name",
             ),
+            const Gap(10),
+            CustomTextFormfield(
+              controller: descController,
+              fieldName: "Description",
+            ),
             const Spacer(),
             Row(
               children: [
@@ -50,12 +56,14 @@ class _EditTaskDialogueState extends State<EditTaskDialogue> {
                   },
                   child: const Text("Cancel"),
                 ),
+                const Gap(10),
                 CustomButton(
                   status: value.status,
                   onPressed: () {
                     homeProvider.updateTask(
                       widget.docId,
                       taskController.text,
+                      descController.text,
                       context,
                     );
                   },

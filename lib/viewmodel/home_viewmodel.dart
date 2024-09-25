@@ -5,8 +5,8 @@ import 'package:todo_firebase/data/response/response.dart';
 import 'package:todo_firebase/model/task_model.dart';
 import 'package:todo_firebase/res/components/common/custom_button.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
-import 'package:todo_firebase/view/widget/add_task_sheet_widget.dart';
-import 'package:todo_firebase/view/widget/edit_task_widget.dart';
+import 'package:todo_firebase/view/home/widget/add_task_sheet_widget.dart';
+import 'package:todo_firebase/view/home/widget/edit_task_widget.dart';
 
 class HomeViewmodel extends ChangeNotifier {
   final firestore = FirebaseFirestore.instance;
@@ -57,7 +57,7 @@ class HomeViewmodel extends ChangeNotifier {
     }
   }
 
-  Future addTask(String taskName, BuildContext context) async {
+  Future addTask(String taskName,String desc, BuildContext context) async {
     changeStatus(Response.loading);
     try {
       await firestore
@@ -65,6 +65,7 @@ class HomeViewmodel extends ChangeNotifier {
           .doc()
           .set(TaskModel(
             taskName: taskName,
+            desc: desc,
             date: DateFormat.yMMMd().format(_selectedDate!),
           ).toMap())
           .then(
@@ -102,12 +103,14 @@ class HomeViewmodel extends ChangeNotifier {
   Future updateTask(
     String docId,
     String newTaskname,
+    String newDesc,
     BuildContext context,
   ) async {
     changeStatus(Response.loading);
     try {
       await firestore.collection("todo").doc(docId).update({
         "taskName": newTaskname,
+        "desc": newDesc,
       }).then(
         (value) {
           if (context.mounted) {

@@ -16,6 +16,7 @@ class AddTaskSheet extends StatefulWidget {
 
 class _AddTaskSheetState extends State<AddTaskSheet> {
   final taskController = TextEditingController();
+  final desController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -49,6 +50,17 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                 },
                 fieldName: "Task",
               ),
+              const Gap(10),
+              CustomTextFormfield(
+                controller: desController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Enter a description";
+                  }
+                  return null;
+                },
+                fieldName: "Description",
+              ),
               const Gap(20),
               Align(
                 alignment: Alignment.centerRight,
@@ -81,7 +93,11 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                           Utils().showFlushToast(
                               context, "Warning", "Select a date");
                         } else {
-                          homeProvider.addTask(taskController.text, context);
+                          homeProvider.addTask(
+                            taskController.text,
+                            desController.text,
+                            context,
+                          );
                         }
                       }
                     },
