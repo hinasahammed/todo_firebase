@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_firebase/data/response/status.dart';
+import 'package:todo_firebase/data/response/response.dart';
 import 'package:todo_firebase/model/task_model.dart';
 import 'package:todo_firebase/res/components/common/custom_button.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
@@ -10,12 +10,12 @@ import 'package:todo_firebase/view/widget/edit_task_widget.dart';
 
 class HomeViewmodel extends ChangeNotifier {
   final firestore = FirebaseFirestore.instance;
-  Status _status = Status.completed;
-  Status get status => _status;
+  Response _status = Response.completed;
+  Response get status => _status;
   DateTime? _selectedDate;
   DateTime? get selectedDate => _selectedDate;
 
-  void changeStatus(Status newStatus) {
+  void changeStatus(Response newStatus) {
     _status = newStatus;
     notifyListeners();
   }
@@ -58,7 +58,7 @@ class HomeViewmodel extends ChangeNotifier {
   }
 
   Future addTask(String taskName, BuildContext context) async {
-    changeStatus(Status.loading);
+    changeStatus(Response.loading);
     try {
       await firestore
           .collection("todo")
@@ -76,9 +76,9 @@ class HomeViewmodel extends ChangeNotifier {
       );
       _selectedDate = null;
       notifyListeners();
-      changeStatus(Status.completed);
+      changeStatus(Response.completed);
     } catch (e) {
-      changeStatus(Status.error);
+      changeStatus(Response.error);
 
       if (context.mounted) {
         Utils().showFlushToast(context, "Error", e.toString());
@@ -104,7 +104,7 @@ class HomeViewmodel extends ChangeNotifier {
     String newTaskname,
     BuildContext context,
   ) async {
-    changeStatus(Status.loading);
+    changeStatus(Response.loading);
     try {
       await firestore.collection("todo").doc(docId).update({
         "taskName": newTaskname,
@@ -115,10 +115,10 @@ class HomeViewmodel extends ChangeNotifier {
           }
         },
       ).whenComplete(
-        () => changeStatus(Status.completed),
+        () => changeStatus(Response.completed),
       );
     } catch (e) {
-      changeStatus(Status.error);
+      changeStatus(Response.error);
       if (context.mounted) {
         Utils().showFlushToast(context, "Error", e.toString());
       }
@@ -159,11 +159,11 @@ class HomeViewmodel extends ChangeNotifier {
     String docId,
     BuildContext context,
   ) async {
-    changeStatus(Status.loading);
+    changeStatus(Response.loading);
     try {
       await firestore.collection("todo").doc(docId).delete();
     } catch (e) {
-      changeStatus(Status.error);
+      changeStatus(Response.error);
       if (context.mounted) {
         Utils().showFlushToast(context, "Error", e.toString());
       }

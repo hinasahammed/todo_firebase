@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:todo_firebase/data/response/status.dart';
+import 'package:todo_firebase/data/response/response.dart';
 
 class CustomButton extends StatelessWidget {
   final void Function() onPressed;
   final String btnText;
   final bool isIcon;
   final IconData? icon;
-  final Status status;
+  final Response status;
   const CustomButton({
     super.key,
     required this.onPressed,
     required this.btnText,
     this.isIcon = false,
     this.icon,
-    this.status = Status.completed,
+    this.status = Response.completed,
   });
 
   @override
@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
               backgroundColor: theme.colorScheme.primary,
             ),
             onPressed: onPressed,
-            label: status == Status.loading
+            label: status == Response.loading
                 ? CircularProgressIndicator(
                     color: theme.colorScheme.onPrimary,
                   )
@@ -45,7 +45,7 @@ class CustomButton extends StatelessWidget {
               backgroundColor: theme.colorScheme.primary,
             ),
             onPressed: onPressed,
-            child: status == Status.loading
+            child: status == Response.loading
                 ? CircularProgressIndicator(
                     color: theme.colorScheme.onPrimary,
                   )

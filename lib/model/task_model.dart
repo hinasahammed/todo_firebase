@@ -1,41 +1,33 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+enum Status { pending, completed }
 
 class TaskModel {
   String? taskName;
   String? date;
-  bool isCompleted;
+  Status status;
 
   TaskModel({
     this.taskName,
     this.date,
-    this.isCompleted = false,
+    this.status = Status.pending,
   });
-
-  TaskModel copyWith({
-    String? taskName,
-    String? date,
-    bool? isCompleted,
-  }) {
-    return TaskModel(
-      taskName: taskName ?? this.taskName,
-      date: date ?? this.date,
-      isCompleted: isCompleted ?? this.isCompleted,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'taskName': taskName,
       'date': date,
-      'isCompleted': isCompleted,
+      'status': status.toString().split('.').last,
     };
   }
 
   factory TaskModel.fromMap(Map<String, dynamic> map) {
     return TaskModel(
-      taskName: map['taskName'] as String,
-      date: map['date'] as String,
-      isCompleted: map['isCompleted'] as bool,
+      taskName: map['taskName'] != null ? map['taskName'] as String : null,
+      date: map['date'] != null ? map['date'] as String : null,
+      status: Status.values
+          .firstWhere((e) => e.toString().split('.').last == map['status']),
     );
   }
 
@@ -43,20 +35,4 @@ class TaskModel {
 
   factory TaskModel.fromJson(String source) =>
       TaskModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() =>
-      'TaskModel(taskName: $taskName, date: $date, isCompleted: $isCompleted)';
-
-  @override
-  bool operator ==(covariant TaskModel other) {
-    if (identical(this, other)) return true;
-
-    return other.taskName == taskName &&
-        other.date == date &&
-        other.isCompleted == isCompleted;
-  }
-
-  @override
-  int get hashCode => taskName.hashCode ^ date.hashCode ^ isCompleted.hashCode;
 }
