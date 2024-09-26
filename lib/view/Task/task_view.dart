@@ -19,7 +19,6 @@ class _TaskViewState extends State<TaskView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final size = MediaQuery.sizeOf(context);
     return StreamBuilder(
       stream: widget.type == "All"
           ? FirebaseFirestore.instance.collection("todo").snapshots()
@@ -112,7 +111,7 @@ class _TaskViewState extends State<TaskView> {
                       child: Card(
                         child: Container(
                           width: double.infinity,
-                          height: size.height * .2,
+                          height: 180,
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: const Color(0xffEBEBEB),
