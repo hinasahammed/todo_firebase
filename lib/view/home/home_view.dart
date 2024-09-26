@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:todo_firebase/view/Task/task_view.dart';
+import 'package:todo_firebase/view/task/task_view.dart';
 import 'package:todo_firebase/viewmodel/home_viewmodel.dart';
 
 class HomeView extends StatefulWidget {
@@ -30,11 +30,13 @@ class _HomeViewState extends State<HomeView> {
                   "Hello,",
                   style: theme.textTheme.titleLarge!.copyWith(
                     color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
+                const Gap(5),
                 Text(
                   "Look at your task",
-                  style: theme.textTheme.labelLarge!.copyWith(
+                  style: theme.textTheme.bodyLarge!.copyWith(
                     color: theme.colorScheme.onSurface,
                   ),
                 ),

@@ -52,6 +52,29 @@ class _TaskViewState extends State<TaskView> {
                       background: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
+                          color: Colors.greenAccent,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Gap(20),
+                            Icon(
+                              Icons.check,
+                              color: theme.colorScheme.onPrimary,
+                            ),
+                            const Gap(20),
+                            Text(
+                              "Mark as Done",
+                              style: theme.textTheme.bodyLarge!.copyWith(
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      secondaryBackground: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
                           color: theme.colorScheme.error,
                         ),
                         child: Row(
@@ -63,7 +86,7 @@ class _TaskViewState extends State<TaskView> {
                             ),
                             const Gap(20),
                             Text(
-                              "Remove",
+                              "Delete Task",
                               style: theme.textTheme.bodyLarge!.copyWith(
                                 color: theme.colorScheme.onError,
                               ),
@@ -78,7 +101,11 @@ class _TaskViewState extends State<TaskView> {
                         ),
                       ),
                       confirmDismiss: (direction) async {
-                        HomeViewmodel().confirmRemoveTask(context, data.id);
+                        if (direction == DismissDirection.endToStart) {
+                          HomeViewmodel().confirmRemoveTask(context, data.id);
+                        } else if (direction == DismissDirection.startToEnd) {
+                          HomeViewmodel().updateStatus(context, data.id);
+                        }
                         return null;
                       },
                       key: ValueKey(index),
@@ -127,8 +154,9 @@ class _TaskViewState extends State<TaskView> {
                                   Icon(
                                     data['status'] == "pending"
                                         ? Icons.pending
-                                        : Icons.done,
+                                        : Icons.done_all_sharp,
                                     color: theme.colorScheme.surface,
+                                    size: 30,
                                   ),
                                   const Spacer(),
                                   Text(
@@ -166,7 +194,15 @@ class _TaskViewState extends State<TaskView> {
                                   )
                                 ],
                               ),
-                              const Gap(20)
+                              const Gap(10),
+                              Text(
+                                data['desc'],
+                                style: theme.textTheme.bodyLarge!.copyWith(
+                                  color: theme.colorScheme.surface,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ],
                           ),
                         ),

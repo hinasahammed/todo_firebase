@@ -57,7 +57,7 @@ class HomeViewmodel extends ChangeNotifier {
     }
   }
 
-  Future addTask(String taskName,String desc, BuildContext context) async {
+  Future addTask(String taskName, String desc, BuildContext context) async {
     changeStatus(Response.loading);
     try {
       await firestore
@@ -167,6 +167,22 @@ class HomeViewmodel extends ChangeNotifier {
       await firestore.collection("todo").doc(docId).delete();
     } catch (e) {
       changeStatus(Response.error);
+      if (context.mounted) {
+        Utils().showFlushToast(context, "Error", e.toString());
+      }
+    }
+  }
+
+  Future updateStatus(
+    BuildContext context,
+    String docId,
+  ) async {
+    try {
+      await firestore
+          .collection("todo")
+          .doc(docId)
+          .update({"status": "completed"});
+    } catch (e) {
       if (context.mounted) {
         Utils().showFlushToast(context, "Error", e.toString());
       }
