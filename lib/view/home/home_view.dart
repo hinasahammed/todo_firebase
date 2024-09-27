@@ -42,30 +42,26 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 const Gap(10),
                 TabBar(
+                  isScrollable: true,
                   dividerColor: Colors.transparent,
                   tabs: [
                     Tab(
-                      child: Card(
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          child: const Text("All"),
-                        ),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(6),
+                        child: const Text("All"),
                       ),
                     ),
                     Tab(
-                      child: Card(
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          child: const Text("Pending"),
-                        ),
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        child: const Text("Pending"),
                       ),
                     ),
                     Tab(
-                      child: Card(
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          child: const Text("Completed"),
-                        ),
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        child: const Text("Completed"),
                       ),
                     ),
                   ],

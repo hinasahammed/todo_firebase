@@ -70,7 +70,8 @@ class _LoginViewState extends State<LoginView> {
               child: SignInButton(
                 Buttons.google,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
+                  borderRadius: BorderRadius.circular(25),
+                ),
                 onPressed: () {},
               ),
             ),
