@@ -47,7 +47,6 @@ class _HomeViewState extends State<HomeView> {
                   tabs: [
                     Tab(
                       child: Container(
-                        width: double.infinity,
                         padding: const EdgeInsets.all(6),
                         child: const Text("All"),
                       ),

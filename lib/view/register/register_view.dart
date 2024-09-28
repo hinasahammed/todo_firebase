@@ -4,16 +4,18 @@ import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:todo_firebase/res/components/common/custom_button.dart';
 import 'package:todo_firebase/res/components/common/custom_textformfield.dart';
+import 'package:todo_firebase/view/login/login_view.dart';
 import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -24,8 +26,7 @@ class _LoginViewState extends State<LoginView> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sign in"),
-        centerTitle: true,
+        title: const Text("Sign up"),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -35,7 +36,7 @@ class _LoginViewState extends State<LoginView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Let's you sign in",
+                "Welcome to Checkly.",
                 style: theme.textTheme.titleLarge!.copyWith(
                   color: theme.colorScheme.onSurface,
                   fontWeight: FontWeight.w600,
@@ -43,25 +44,43 @@ class _LoginViewState extends State<LoginView> {
               ),
               const Gap(5),
               Text(
-                "Welcome back, you have been missed",
+                "And enjoy life during the time you",
                 style: theme.textTheme.bodyLarge!.copyWith(
                   color: theme.colorScheme.onSurface.withOpacity(.5),
                 ),
               ),
               const Gap(20),
               CustomTextFormfield(
+                controller: _nameController,
+                validator: (input) {
+                  if (input == null || input.isEmpty) {
+                    return "Enter your full name";
+                  }
+                  return null;
+                },
+                fieldName: "Full name",
+              ),
+              const Gap(10),
+              CustomTextFormfield(
                 controller: _emailController,
-                fieldName: "Email",
+                validator: (input) {
+                  if (input == null || input.isEmpty) {
+                    return "Enter your email address";
+                  }
+                  return null;
+                },
+                fieldName: "Email address",
               ),
               const Gap(10),
               CustomTextFormfield(
                 controller: _passwordController,
+                validator: (input) {
+                  if (input == null || input.isEmpty) {
+                    return "Enter your password";
+                  }
+                  return null;
+                },
                 fieldName: "Password",
-              ),
-              const Gap(20),
-              TextButton(
-                onPressed: () {},
-                child: const Text("Forget Password?"),
               ),
               const Gap(50),
               SizedBox(
@@ -70,14 +89,14 @@ class _LoginViewState extends State<LoginView> {
                 child: CustomButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      authController.login(
+                      authController.register(
                         _emailController.text,
                         _passwordController.text,
                         context,
                       );
                     }
                   },
-                  btnText: "Sign in",
+                  btnText: "Sign up",
                 ),
               ),
               const Gap(10),
@@ -87,8 +106,7 @@ class _LoginViewState extends State<LoginView> {
                 child: SignInButton(
                   Buttons.google,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
+                      borderRadius: BorderRadius.circular(25)),
                   onPressed: () {},
                 ),
               ),
@@ -97,14 +115,20 @@ class _LoginViewState extends State<LoginView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have account",
+                    "Already have account",
                     style: theme.textTheme.bodyLarge!.copyWith(
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
-                    child: const Text("Create one."),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginView(),
+                          ));
+                    },
+                    child: const Text("Sign in."),
                   ),
                 ],
               )
