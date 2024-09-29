@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:todo_firebase/view/home/home_view.dart';
-import 'package:todo_firebase/view/login/login_view.dart';
+import 'package:todo_firebase/res/routes/app_router.dart';
 import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 import 'package:todo_firebase/viewmodel/controller/home/home_controller.dart';
 import 'firebase_options.dart';
@@ -24,6 +22,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _appRouter = AppRouter();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -35,7 +34,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => AuthController(),
         )
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Todo firebase',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -45,20 +44,7 @@ class _MyAppState extends State<MyApp> {
           ),
           useMaterial3: true,
         ),
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return const Center(child: Text('An error occurred'));
-            } else if (snapshot.hasData) {
-              return const HomeView();
-            } else {
-              return const LoginView();
-            }
-          },
-        ),
+        routerConfig: _appRouter.config(),
       ),
     );
   }

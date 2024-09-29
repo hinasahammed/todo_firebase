@@ -1,12 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:todo_firebase/res/components/constants/custom_button.dart';
 import 'package:todo_firebase/res/components/constants/custom_textformfield.dart';
-import 'package:todo_firebase/view/login/login_view.dart';
+import 'package:todo_firebase/res/routes/app_router.gr.dart';
 import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 
+@RoutePage()
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
@@ -122,11 +124,8 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginView(),
-                          ));
+                      context.pushRoute(LoginView());
+                   
                     },
                     child: const Text("Sign in."),
                   ),

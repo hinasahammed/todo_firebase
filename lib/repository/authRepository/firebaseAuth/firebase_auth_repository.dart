@@ -1,9 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase/repository/authRepository/auth_repository.dart';
+import 'package:todo_firebase/res/routes/app_router.gr.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
-import 'package:todo_firebase/view/home/home_view.dart';
-import 'package:todo_firebase/view/login/login_view.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
   final auth = FirebaseAuth.instance;
@@ -22,11 +22,8 @@ class FirebaseAuthRepository implements AuthRepository {
           .then(
         (value) {
           if (context.mounted) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeView(),
-                ));
+            context.router.replace(HomeView());
+
             Utils().showFlushToast(
               context,
               "Success",
@@ -78,11 +75,7 @@ class FirebaseAuthRepository implements AuthRepository {
       await auth.signOut().then(
         (value) {
           if (context.mounted) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginView(),
-                ));
+            context.router.replace(LoginView());
           }
         },
       );
@@ -105,11 +98,8 @@ class FirebaseAuthRepository implements AuthRepository {
           .then(
         (value) {
           if (context.mounted) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginView(),
-                ));
+            context.router.replace(LoginView());
+           
             Utils().showFlushToast(
               context,
               "Success",

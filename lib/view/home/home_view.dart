@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -5,6 +6,7 @@ import 'package:todo_firebase/view/task/task_view.dart';
 import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 import 'package:todo_firebase/viewmodel/controller/home/home_controller.dart';
 
+@RoutePage()
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 

@@ -43,7 +43,6 @@ dependencies:
   provider: ^6.1.2
   sign_in_button: ^3.2.0
   firebase_auth: ^5.3.1
-  flutter_launcher_icons: ^0.14.1
   auto_route: ^9.2.2
 
 dev_dependencies:
@@ -55,10 +54,22 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   flutter_gen_runner: ^5.7.0
   auto_route_generator: ^9.0.0
   build_runner: ^2.4.12
+  flutter_launcher_icons: "^0.14.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  image_path: "assets/icons/checkly_logo.png"
+  web:
+    generate: true
+    image_path: "assets/icons/checkly_logo.png"
+  windows:
+    generate: true
+    image_path: "assets/icons/checkly_logo.png"
+    icon_size: 48
 
 
 
@@ -76,6 +87,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -16,6 +16,7 @@ class EditTaskDialogue extends StatefulWidget {
 class _EditTaskDialogueState extends State<EditTaskDialogue> {
   final taskController = TextEditingController();
   final descController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -23,55 +24,72 @@ class _EditTaskDialogueState extends State<EditTaskDialogue> {
     final homeProvider = Provider.of<HomeController>(context, listen: false);
     return Consumer<HomeController>(
       builder: (context, value, child) => Container(
-        height: size.height * .3,
+        height: size.height * .4,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Edit task",
-              style: theme.textTheme.titleLarge!.copyWith(
-                color: theme.colorScheme.onSurface,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Edit task",
+                style: theme.textTheme.titleLarge!.copyWith(
+                  color: theme.colorScheme.onSurface,
+                ),
               ),
-            ),
-            const Gap(20),
-            CustomTextFormfield(
-              controller: taskController,
-              fieldName: "Task name",
-            ),
-            const Gap(10),
-            CustomTextFormfield(
-              controller: descController,
-              fieldName: "Description",
-            ),
-            const Spacer(),
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancel"),
-                ),
-                const Gap(10),
-                CustomButton(
-                  status: value.status,
-                  onPressed: () {
-                    homeProvider.updateTask(
-                      widget.docId,
-                      taskController.text,
-                      descController.text,
-                      context,
-                    );
-                  },
-                  btnText: "Update",
-                ),
-              ],
-            )
-          ],
+              const Gap(20),
+              CustomTextFormfield(
+                controller: taskController,
+                validator: (input) {
+                  if (input == null || input.isEmpty) {
+                    return "Enter task name";
+                  }
+                  return null;
+                },
+                fieldName: "Task name",
+              ),
+              const Gap(10),
+              CustomTextFormfield(
+                controller: descController,
+                validator: (input) {
+                  if (input == null || input.isEmpty) {
+                    return "Enter Description";
+                  }
+                  return null;
+                },
+                fieldName: "Description",
+              ),
+              const Spacer(),
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Cancel"),
+                  ),
+                  const Gap(10),
+                  CustomButton(
+                    status: value.status,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        homeProvider.updateTask(
+                          widget.docId,
+                          taskController.text,
+                          descController.text,
+                          context,
+                        );
+                      }
+                    },
+                    btnText: "Update",
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import 'package:todo_firebase/res/components/constants/custom_button.dart';
 import 'package:todo_firebase/res/components/constants/custom_textformfield.dart';
 import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 
+@RoutePage()
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -64,20 +66,23 @@ class _LoginViewState extends State<LoginView> {
                 child: const Text("Forget Password?"),
               ),
               const Gap(50),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: CustomButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      authController.login(
-                        _emailController.text,
-                        _passwordController.text,
-                        context,
-                      );
-                    }
-                  },
-                  btnText: "Sign in",
+              Consumer<AuthController>(
+                builder: (context, value, child) => SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: CustomButton(
+                    status: value.status,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        authController.login(
+                          _emailController.text,
+                          _passwordController.text,
+                          context,
+                        );
+                      }
+                    },
+                    btnText: "Sign in",
+                  ),
                 ),
               ),
               const Gap(10),
