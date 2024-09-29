@@ -27,4 +27,8 @@ class AuthController extends ChangeNotifier {
       context,
     );
   }
+
+  Future logout(BuildContext context) async {
+    await _repository.logout(context);
+  }
 }

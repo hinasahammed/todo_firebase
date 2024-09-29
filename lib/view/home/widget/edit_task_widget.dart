@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_firebase/res/components/common/custom_button.dart';
-import 'package:todo_firebase/res/components/common/custom_textformfield.dart';
-import 'package:todo_firebase/viewmodel/home_viewmodel.dart';
+import 'package:todo_firebase/res/components/constants/custom_button.dart';
+import 'package:todo_firebase/res/components/constants/custom_textformfield.dart';
+import 'package:todo_firebase/viewmodel/controller/home/home_controller.dart';
 
 class EditTaskDialogue extends StatefulWidget {
   final String docId;
@@ -20,8 +20,8 @@ class _EditTaskDialogueState extends State<EditTaskDialogue> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.sizeOf(context);
-    final homeProvider = Provider.of<HomeViewmodel>(context, listen: false);
-    return Consumer<HomeViewmodel>(
+    final homeProvider = Provider.of<HomeController>(context, listen: false);
+    return Consumer<HomeController>(
       builder: (context, value, child) => Container(
         height: size.height * .3,
         padding: const EdgeInsets.all(8),

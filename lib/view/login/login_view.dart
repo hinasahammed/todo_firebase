@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-import 'package:todo_firebase/res/components/common/custom_button.dart';
-import 'package:todo_firebase/res/components/common/custom_textformfield.dart';
+import 'package:todo_firebase/res/components/constants/custom_button.dart';
+import 'package:todo_firebase/res/components/constants/custom_textformfield.dart';
 import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 
 class LoginView extends StatefulWidget {

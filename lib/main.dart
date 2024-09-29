@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:todo_firebase/view/home/home_view.dart';
 import 'package:todo_firebase/view/login/login_view.dart';
 import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
-import 'package:todo_firebase/viewmodel/home_viewmodel.dart';
+import 'package:todo_firebase/viewmodel/controller/home/home_controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => HomeViewmodel(),
+          create: (context) => HomeController(),
         ),
         ChangeNotifierProvider(
           create: (context) => AuthController(),

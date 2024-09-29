@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_firebase/res/components/common/custom_button.dart';
-import 'package:todo_firebase/res/components/common/custom_textformfield.dart';
+import 'package:todo_firebase/res/components/constants/custom_button.dart';
+import 'package:todo_firebase/res/components/constants/custom_textformfield.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
-import 'package:todo_firebase/viewmodel/home_viewmodel.dart';
+import 'package:todo_firebase/viewmodel/controller/home/home_controller.dart';
 
 class AddTaskSheet extends StatefulWidget {
   const AddTaskSheet({super.key});
@@ -20,11 +20,11 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final homeProvider = Provider.of<HomeViewmodel>(context, listen: false);
+    final homeProvider = Provider.of<HomeController>(context, listen: false);
 
     final size = MediaQuery.sizeOf(context);
     final theme = Theme.of(context);
-    return Consumer<HomeViewmodel>(
+    return Consumer<HomeController>(
       builder: (context, value, child) => Container(
         padding: const EdgeInsets.all(16),
         width: size.width,

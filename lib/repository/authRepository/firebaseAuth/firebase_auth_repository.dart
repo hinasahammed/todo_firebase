@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_firebase/repository/auth_repository.dart';
+import 'package:todo_firebase/repository/authRepository/auth_repository.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
 import 'package:todo_firebase/view/home/home_view.dart';
 import 'package:todo_firebase/view/login/login_view.dart';
@@ -73,8 +73,24 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> logout() {
-    throw UnimplementedError();
+  Future<void> logout(BuildContext context) async {
+    try {
+      await auth.signOut().then(
+        (value) {
+          if (context.mounted) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginView(),
+                ));
+          }
+        },
+      );
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        Utils().showFlushToast(context, "Error", e.toString());
+      }
+    }
   }
 
   @override

@@ -5,5 +5,5 @@ abstract class AuthRepository {
 
   Future<void> login(String email,String password,BuildContext context);
 
-  Future<void> logout();
+  Future<void> logout(BuildContext context);
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:todo_firebase/gen/assets.gen.dart';
 import 'package:todo_firebase/res/utils/task_container_colors.dart';
-import 'package:todo_firebase/viewmodel/home_viewmodel.dart';
+import 'package:todo_firebase/viewmodel/controller/home/home_controller.dart';
 
 class TaskView extends StatefulWidget {
   final String type;
@@ -101,9 +101,9 @@ class _TaskViewState extends State<TaskView> {
                       ),
                       confirmDismiss: (direction) async {
                         if (direction == DismissDirection.endToStart) {
-                          HomeViewmodel().confirmRemoveTask(context, data.id);
+                          HomeController().confirmRemoveTask(context, data.id);
                         } else if (direction == DismissDirection.startToEnd) {
-                          HomeViewmodel().updateStatus(context, data.id);
+                          HomeController().updateStatus(context, data.id);
                         }
                         return null;
                       },
@@ -186,7 +186,7 @@ class _TaskViewState extends State<TaskView> {
                                       ),
                                     ),
                                     onPressed: () {
-                                      HomeViewmodel()
+                                      HomeController()
                                           .showEdit(context, data.id);
                                     },
                                     child: const Icon(Icons.edit),

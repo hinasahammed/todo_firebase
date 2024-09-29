@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_firebase/data/response/response.dart';
 import 'package:todo_firebase/model/task_model.dart';
-import 'package:todo_firebase/res/components/common/custom_button.dart';
+import 'package:todo_firebase/res/components/constants/custom_button.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
 import 'package:todo_firebase/view/home/widget/add_task_sheet_widget.dart';
 import 'package:todo_firebase/view/home/widget/edit_task_widget.dart';
 
-class HomeViewmodel extends ChangeNotifier {
+class HomeController extends ChangeNotifier {
   final firestore = FirebaseFirestore.instance;
   Response _status = Response.completed;
   Response get status => _status;
