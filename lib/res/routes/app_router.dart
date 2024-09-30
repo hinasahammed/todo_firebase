@@ -6,8 +6,7 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: SplashView.page, initial: true),
-        AutoRoute(page: RegisterView.page),
         AutoRoute(page: LoginView.page),
-        AutoRoute(page: HomeView.page, path: "/${HomeView.name}"),
+        AutoRoute(page: HomeView.page),
       ];
 }
