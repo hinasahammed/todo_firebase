@@ -90,8 +90,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         if (value.selectedDate == null) {
-                          Utils().showFlushToast(
-                              context, "Warning", "Select a date");
+                          Utils().showToast("Select a date");
                         } else {
                           homeProvider.addTask(
                             taskController.text,

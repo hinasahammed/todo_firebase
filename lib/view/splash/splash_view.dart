@@ -28,8 +28,8 @@ class _SplashViewState extends State<SplashView> {
           Center(
             child: Assets.icons.checklyLogo.image(),
           ),
-          Gap(50),
-          CircularProgressIndicator(),
+          const Gap(50),
+          const CircularProgressIndicator(),
         ],
       ),
     );

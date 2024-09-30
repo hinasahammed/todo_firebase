@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:todo_firebase/res/components/constants/custom_button.dart';
 import 'package:todo_firebase/res/components/constants/custom_textformfield.dart';
+import 'package:todo_firebase/res/routes/app_router.gr.dart';
+import 'package:todo_firebase/res/utils/utils.dart';
 import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 
 @RoutePage()
@@ -108,11 +110,18 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.router.push(RegisterView());
+                    },
                     child: const Text("Create one."),
                   ),
                 ],
-              )
+              ),
+              TextButton(
+                  onPressed: () {
+                    Utils().showToast("message");
+                  },
+                  child: Text('data')),
             ],
           ),
         ),

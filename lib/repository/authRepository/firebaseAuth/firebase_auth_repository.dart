@@ -22,49 +22,40 @@ class FirebaseAuthRepository implements AuthRepository {
           .then(
         (value) {
           if (context.mounted) {
-            context.router.replace(HomeView());
-
-            Utils().showFlushToast(
-              context,
-              "Success",
-              "Login successfull",
-            );
+            Utils().showToast("Login successfull");
+            context.router.replaceNamed("/HomeView");
           }
         },
       );
     } on FirebaseAuthException catch (error) {
       if (error.code == 'invalid-email') {
         if (context.mounted) {
-          return Utils()
-              .showFlushToast(context, 'Error', 'email address is not valid');
+          Utils().showToast("Invalid email");
         }
       }
       if (error.code == 'user-disabled') {
         if (context.mounted) {
-          return Utils()
-              .showFlushToast(context, 'Error', 'email has been disabled');
+          Utils().showToast("Email has been disabled");
         }
       }
       if (error.code == 'user-not-found') {
         if (context.mounted) {
-          return Utils().showFlushToast(context, 'Error',
-              'there is no user corresponding to the given email');
+          Utils()
+              .showToast("There is no user corresponding to the given email");
         }
       }
       if (error.code == 'wrong-password') {
         if (context.mounted) {
-          return Utils()
-              .showFlushToast(context, 'Error', 'password is invalid');
+          Utils().showToast("Password is invalid");
         }
       }
       if (error.code == 'invalid-credential') {
         if (context.mounted) {
-          return Utils().showFlushToast(context, 'Error', 'Invalid credential');
+          Utils().showToast("Invalid credential");
         }
       }
       if (context.mounted) {
-        return Utils()
-            .showFlushToast(context, 'Error', error.message.toString());
+        Utils().showToast(error.toString());
       }
     }
   }
@@ -75,13 +66,13 @@ class FirebaseAuthRepository implements AuthRepository {
       await auth.signOut().then(
         (value) {
           if (context.mounted) {
-            context.router.replace(LoginView());
+            context.router.replace(const LoginView());
           }
         },
       );
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
-        Utils().showFlushToast(context, "Error", e.toString());
+        Utils().showToast(e.toString());
       }
     }
   }
@@ -98,13 +89,9 @@ class FirebaseAuthRepository implements AuthRepository {
           .then(
         (value) {
           if (context.mounted) {
-            context.router.replace(LoginView());
-           
-            Utils().showFlushToast(
-              context,
-              "Success",
-              "Account created sucessfully",
-            );
+            Utils().showToast("Account created sucessfully");
+
+            context.router.replace(const LoginView());
           }
         },
       );
@@ -112,33 +99,30 @@ class FirebaseAuthRepository implements AuthRepository {
       switch (e.code) {
         case "invalid-email":
           if (context.mounted) {
-            Utils()
-                .showFlushToast(context, "Error", 'email address is not valid');
+            Utils().showToast("Email address is not valid");
           }
         case "weak-password":
           if (context.mounted) {
-            Utils().showFlushToast(context, "Error", 'Weak password');
+            Utils().showToast("Weak password");
           }
         case "user-disabled":
           if (context.mounted) {
-            Utils().showFlushToast(context, "Error", 'user-disabled');
+            Utils().showToast("user-disabled");
           }
         case "user-not-found":
           if (context.mounted) {
-            Utils().showFlushToast(context, "Error", 'user not found');
+            Utils().showToast("user not found");
           }
         case "wrong-password":
           if (context.mounted) {
-            Utils().showFlushToast(context, "Error", 'Wrong password');
+            Utils().showToast("Wrong password");
           }
         case "email-already-in-use":
           if (context.mounted) {
-            Utils().showFlushToast(
-                context, "Error", 'Already have an account with this email');
+            Utils().showToast("Already have an account with this email");
           }
         default:
-          Utils()
-              .showFlushToast(context, "Error", 'An undefined Error happened.');
+          Utils().showToast("An undefined Error happened.");
       }
     }
   }

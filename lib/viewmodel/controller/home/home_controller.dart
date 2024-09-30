@@ -49,7 +49,7 @@ class HomeController extends ChangeNotifier {
     );
     if (selectDate == null) {
       if (context.mounted) {
-        Utils().showFlushToast(context, "Error", "Select a date");
+        Utils().showToast("Select a date");
       }
     } else {
       _selectedDate = selectDate;
@@ -82,7 +82,7 @@ class HomeController extends ChangeNotifier {
       changeStatus(Response.error);
 
       if (context.mounted) {
-        Utils().showFlushToast(context, "Error", e.toString());
+        Utils().showToast(e.toString());
       }
     }
   }
@@ -95,7 +95,7 @@ class HomeController extends ChangeNotifier {
       });
     } catch (e) {
       if (context.mounted) {
-        Utils().showFlushToast(context, "Error", e.toString());
+        Utils().showToast(e.toString());
       }
     }
   }
@@ -123,7 +123,7 @@ class HomeController extends ChangeNotifier {
     } catch (e) {
       changeStatus(Response.error);
       if (context.mounted) {
-        Utils().showFlushToast(context, "Error", e.toString());
+        Utils().showToast(e.toString());
       }
     }
   }
@@ -145,11 +145,7 @@ class HomeController extends ChangeNotifier {
             onPressed: () {
               removeTask(docId, context);
               Navigator.pop(context);
-              Utils().showFlushToast(
-                context,
-                "Success",
-                "Removed task successfully",
-              );
+              Utils().showToast("Successfully task removed");
             },
             btnText: "Remove",
           ),
@@ -168,7 +164,7 @@ class HomeController extends ChangeNotifier {
     } catch (e) {
       changeStatus(Response.error);
       if (context.mounted) {
-        Utils().showFlushToast(context, "Error", e.toString());
+        Utils().showToast(e.toString());
       }
     }
   }
@@ -184,7 +180,7 @@ class HomeController extends ChangeNotifier {
           .update({"status": "completed"});
     } catch (e) {
       if (context.mounted) {
-        Utils().showFlushToast(context, "Error", e.toString());
+        Utils().showToast(e.toString());
       }
     }
   }

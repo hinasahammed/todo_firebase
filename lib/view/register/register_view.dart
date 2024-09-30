@@ -85,20 +85,23 @@ class _RegisterViewState extends State<RegisterView> {
                 fieldName: "Password",
               ),
               const Gap(50),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: CustomButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      authController.register(
-                        _emailController.text,
-                        _passwordController.text,
-                        context,
-                      );
-                    }
-                  },
-                  btnText: "Sign up",
+              Consumer<AuthController>(
+                builder: (context, value, child) => SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: CustomButton(
+                    status: value.status,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        authController.register(
+                          _emailController.text,
+                          _passwordController.text,
+                          context,
+                        );
+                      }
+                    },
+                    btnText: "Sign up",
+                  ),
                 ),
               ),
               const Gap(10),
@@ -124,8 +127,7 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.pushRoute(LoginView());
-                   
+                      context.pushRoute(const LoginView());
                     },
                     child: const Text("Sign in."),
                   ),

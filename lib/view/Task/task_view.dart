@@ -43,7 +43,8 @@ class _TaskViewState extends State<TaskView> {
                     ),
                   ),
                 )
-              : ListView.builder(
+              : ListView.separated(
+                  separatorBuilder: (context, index) => Gap(10),
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     final data = snapshot.data!.docs[index];

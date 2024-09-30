@@ -9,17 +9,17 @@ class SplashServices {
   final auth = FirebaseAuth.instance;
   Future isLogedin(BuildContext context) async {
     Timer(
-      Duration(seconds: 3),
+      const Duration(seconds: 3),
       () {
         auth.authStateChanges().listen(
           (user) {
             if (user == null) {
               if (context.mounted) {
-                context.router.replace(LoginView());
+                context.router.replace(const LoginView());
               }
             } else {
               if (context.mounted) {
-                context.router.replace(HomeView());
+                context.router.replace(const HomeView());
               }
             }
           },

@@ -78,7 +78,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ],
                 ),
-                const Gap(10),
+                const Gap(20),
                 const Expanded(
                   child: TabBarView(
                     children: [
