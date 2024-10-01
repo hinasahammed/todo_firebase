@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_firebase/repository/authRepository/auth_repository.dart';
 import 'package:todo_firebase/res/routes/app_router.gr.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
@@ -22,41 +23,28 @@ class FirebaseAuthRepository implements AuthRepository {
           .then(
         (value) {
           if (context.mounted) {
-            Utils().showToast("Login successfull");
             context.router.replaceNamed("/HomeView");
           }
+          Utils().showToast("Login successfull");
         },
       );
     } on FirebaseAuthException catch (error) {
       if (error.code == 'invalid-email') {
-        if (context.mounted) {
-          Utils().showToast("Invalid email");
-        }
+        Utils().showToast("Invalid email");
       }
       if (error.code == 'user-disabled') {
-        if (context.mounted) {
-          Utils().showToast("Email has been disabled");
-        }
+        Utils().showToast("Email has been disabled");
       }
       if (error.code == 'user-not-found') {
-        if (context.mounted) {
-          Utils()
-              .showToast("There is no user corresponding to the given email");
-        }
+        Utils().showToast("There is no user corresponding to the given email");
       }
       if (error.code == 'wrong-password') {
-        if (context.mounted) {
-          Utils().showToast("Password is invalid");
-        }
+        Utils().showToast("Password is invalid");
       }
       if (error.code == 'invalid-credential') {
-        if (context.mounted) {
-          Utils().showToast("Invalid credential");
-        }
+        Utils().showToast("Invalid credential");
       }
-      if (context.mounted) {
-        Utils().showToast(error.toString());
-      }
+      Utils().showToast(error.toString());
     }
   }
 
@@ -71,9 +59,7 @@ class FirebaseAuthRepository implements AuthRepository {
         },
       );
     } on FirebaseAuthException catch (e) {
-      if (context.mounted) {
-        Utils().showToast(e.toString());
-      }
+      Utils().showToast(e.toString());
     }
   }
 
@@ -89,41 +75,52 @@ class FirebaseAuthRepository implements AuthRepository {
           .then(
         (value) {
           if (context.mounted) {
-            Utils().showToast("Account created sucessfully");
-
             context.router.replace(const LoginView());
           }
+          Utils().showToast("Account created sucessfully");
         },
       );
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "invalid-email":
-          if (context.mounted) {
-            Utils().showToast("Email address is not valid");
-          }
+          Utils().showToast("Email address is not valid");
+
         case "weak-password":
-          if (context.mounted) {
-            Utils().showToast("Weak password");
-          }
+          Utils().showToast("Weak password");
+
         case "user-disabled":
-          if (context.mounted) {
-            Utils().showToast("user-disabled");
-          }
+          Utils().showToast("user-disabled");
+
         case "user-not-found":
-          if (context.mounted) {
-            Utils().showToast("user not found");
-          }
+          Utils().showToast("user not found");
+
         case "wrong-password":
-          if (context.mounted) {
-            Utils().showToast("Wrong password");
-          }
+          Utils().showToast("Wrong password");
+
         case "email-already-in-use":
-          if (context.mounted) {
-            Utils().showToast("Already have an account with this email");
-          }
+          Utils().showToast("Already have an account with this email");
+
         default:
           Utils().showToast("An undefined Error happened.");
       }
     }
+  }
+
+  @override
+  Future<UserCredential?> loginWithGoogle() async {
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      final googleAuth = await googleUser?.authentication;
+      final cred = GoogleAuthProvider.credential(
+        idToken: googleAuth?.idToken,
+        accessToken: googleAuth?.accessToken,
+      );
+
+      return await auth.signInWithCredential(cred);
+    } catch (e) {
+      print("this is error ${e.toString()}");
+      Utils().showToast(e.toString());
+    }
+    return null;
   }
 }

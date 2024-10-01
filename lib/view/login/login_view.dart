@@ -95,7 +95,9 @@ class _LoginViewState extends State<LoginView> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    authController.signinWithGoogle();
+                  },
                 ),
               ),
               const Gap(50),

@@ -48,9 +48,8 @@ class HomeController extends ChangeNotifier {
       lastDate: DateTime(2030),
     );
     if (selectDate == null) {
-      if (context.mounted) {
         Utils().showToast("Select a date");
-      }
+      
     } else {
       _selectedDate = selectDate;
       notifyListeners();
@@ -81,9 +80,8 @@ class HomeController extends ChangeNotifier {
     } catch (e) {
       changeStatus(Response.error);
 
-      if (context.mounted) {
         Utils().showToast(e.toString());
-      }
+      
     }
   }
 
@@ -94,9 +92,8 @@ class HomeController extends ChangeNotifier {
         "isCompleted": newValue,
       });
     } catch (e) {
-      if (context.mounted) {
         Utils().showToast(e.toString());
-      }
+     
     }
   }
 
@@ -122,9 +119,8 @@ class HomeController extends ChangeNotifier {
       );
     } catch (e) {
       changeStatus(Response.error);
-      if (context.mounted) {
         Utils().showToast(e.toString());
-      }
+     
     }
   }
 
@@ -163,9 +159,8 @@ class HomeController extends ChangeNotifier {
       await firestore.collection("todo").doc(docId).delete();
     } catch (e) {
       changeStatus(Response.error);
-      if (context.mounted) {
         Utils().showToast(e.toString());
-      }
+      
     }
   }
 
@@ -179,9 +174,8 @@ class HomeController extends ChangeNotifier {
           .doc(docId)
           .update({"status": "completed"});
     } catch (e) {
-      if (context.mounted) {
         Utils().showToast(e.toString());
-      }
+      
     }
   }
 }
