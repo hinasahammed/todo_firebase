@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 abstract class AuthRepository {
@@ -8,5 +7,5 @@ abstract class AuthRepository {
 
   Future<void> logout(BuildContext context);
 
-  Future<UserCredential?> loginWithGoogle();
+  Future loginWithGoogle(BuildContext context);
 }

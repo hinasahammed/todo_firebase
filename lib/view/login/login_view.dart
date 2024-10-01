@@ -96,7 +96,7 @@ class _LoginViewState extends State<LoginView> {
                     borderRadius: BorderRadius.circular(25),
                   ),
                   onPressed: () {
-                    authController.signinWithGoogle();
+                    authController.signinWithGoogle(context);
                   },
                 ),
               ),

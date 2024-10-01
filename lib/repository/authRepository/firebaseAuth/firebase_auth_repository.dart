@@ -107,7 +107,7 @@ class FirebaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<UserCredential?> loginWithGoogle() async {
+  Future loginWithGoogle(BuildContext context) async {
     try {
       final googleUser = await GoogleSignIn().signIn();
       final googleAuth = await googleUser?.authentication;
@@ -116,11 +116,16 @@ class FirebaseAuthRepository implements AuthRepository {
         accessToken: googleAuth?.accessToken,
       );
 
-      return await auth.signInWithCredential(cred);
+      await auth.signInWithCredential(cred).then(
+        (value) {
+          if (context.mounted) {
+            context.router.replaceNamed("/HomeView");
+          }
+          Utils().showToast("Login successfull");
+        },
+      );
     } catch (e) {
-      print("this is error ${e.toString()}");
       Utils().showToast(e.toString());
     }
-    return null;
   }
 }

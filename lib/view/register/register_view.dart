@@ -112,7 +112,9 @@ class _RegisterViewState extends State<RegisterView> {
                   Buttons.google,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25)),
-                  onPressed: () {},
+                  onPressed: () {
+                    authController.signinWithGoogle(context);
+                  },
                 ),
               ),
               const Gap(50),

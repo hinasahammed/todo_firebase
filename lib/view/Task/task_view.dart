@@ -112,7 +112,7 @@ class _TaskViewState extends State<TaskView> {
                       child: Card(
                         child: Container(
                           width: double.infinity,
-                          height: 180,
+                          height: 190,
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: const Color(0xffEBEBEB),
