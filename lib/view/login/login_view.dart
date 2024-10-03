@@ -26,7 +26,7 @@ class _LoginViewState extends State<LoginView> {
 
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(  
         title: const Text("Sign in"),
         centerTitle: true,
       ),

@@ -109,7 +109,10 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future loginWithGoogle(BuildContext context) async {
     try {
-      final googleUser = await GoogleSignIn().signIn();
+      final googleUser = await GoogleSignIn(
+              clientId:
+                  "699057576920-rih8rbg5cb95gjug839cbgnr4697tv9e.apps.googleusercontent.com")
+          .signIn();
       final googleAuth = await googleUser?.authentication;
       final cred = GoogleAuthProvider.credential(
         idToken: googleAuth?.idToken,
@@ -125,6 +128,7 @@ class FirebaseAuthRepository implements AuthRepository {
         },
       );
     } catch (e) {
+      print(e.toString());
       Utils().showToast(e.toString());
     }
   }
