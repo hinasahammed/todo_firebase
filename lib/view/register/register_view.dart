@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +24,7 @@ class _RegisterViewState extends State<RegisterView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  File? profileImage;
   @override
   Widget build(BuildContext context) {
     final authController = Provider.of<AuthController>(context, listen: false);
@@ -51,7 +55,41 @@ class _RegisterViewState extends State<RegisterView> {
                   color: theme.colorScheme.onSurface.withOpacity(.5),
                 ),
               ),
-              const Gap(20),
+              const Gap(30),
+              Align(
+                alignment: Alignment.topCenter,
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  onTap: () async {
+                    final newVal = await authController.pickImage();
+                    setState(() {
+                      profileImage = newVal;
+                    });
+                  },
+                  child: AvatarGlow(
+                      glowRadiusFactor: .3,
+                      glowCount: 2,
+                      startDelay: const Duration(milliseconds: 1000),
+                      glowColor: theme.colorScheme.primary,
+                      glowShape: BoxShape.circle,
+                      curve: Curves.fastOutSlowIn,
+                      child: Container(
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: profileImage != null
+                                ? FileImage(profileImage!)
+                                : NetworkImage(
+                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwdIVSqaMsmZyDbr9mDPk06Nss404fosHjLg&s"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      )),
+                ),
+              ),
+              const Gap(40),
               CustomTextFormfield(
                 controller: _nameController,
                 validator: (input) {

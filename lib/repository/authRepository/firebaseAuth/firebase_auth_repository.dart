@@ -128,7 +128,6 @@ class FirebaseAuthRepository implements AuthRepository {
         },
       );
     } catch (e) {
-      print(e.toString());
       Utils().showToast(e.toString());
     }
   }
