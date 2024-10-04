@@ -133,6 +133,8 @@ class _RegisterViewState extends State<RegisterView> {
                       if (_formKey.currentState!.validate()) {
                         authController.register(
                           _emailController.text,
+                          profileImage!,
+                          _nameController.text,
                           _passwordController.text,
                           context,
                         );

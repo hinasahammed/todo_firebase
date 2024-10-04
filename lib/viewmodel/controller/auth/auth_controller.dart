@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo_firebase/data/response/response.dart';
+import 'package:todo_firebase/model/user_model.dart';
 import 'package:todo_firebase/repository/authRepository/firebaseAuth/firebase_auth_repository.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
 
@@ -22,15 +23,21 @@ class AuthController extends ChangeNotifier {
 
   Future register(
     String email,
+    File image,
+    String userName,
     String password,
     BuildContext context,
   ) async {
     changeStatus(Response.loading);
-    await _repository.register(
-      email,
-      password,
-      context,
-    );
+    await _repository
+        .register(
+          email,
+          password,
+          context,
+        )
+        .then(
+          (value) => saveUserData(image, userName, email),
+        );
     changeStatus(Response.completed);
   }
 
@@ -46,6 +53,7 @@ class AuthController extends ChangeNotifier {
       password,
       context,
     );
+
     changeStatus(Response.completed);
   }
 
@@ -80,12 +88,19 @@ class AuthController extends ChangeNotifier {
     }
   }
 
-  Future<void> saveImageUrlToFirestore(String imageUrl) async {
+  Future<void> saveUserData(File image, String userName, String email) async {
+    String imageUrl = await uploadImageToStorage(image) ?? '';
     try {
       await FirebaseFirestore.instance
           .collection('Users')
           .doc(auth.currentUser!.uid)
-          .set({'url': imageUrl});
+          .set(
+            UserModel(
+              userName: userName,
+              email: email,
+              imageUrl: imageUrl,
+            ).toMap(),
+          );
     } catch (e) {
       print('Error saving URL to Firestore: $e');
     }
