@@ -18,6 +18,13 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
   final taskController = TextEditingController();
   final desController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+   @override
+  void dispose() {
+    super.dispose();
+    taskController.dispose();
+    desController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final homeProvider = Provider.of<HomeController>(context, listen: false);
@@ -112,9 +119,5 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    taskController.dispose();
-  }
+ 
 }

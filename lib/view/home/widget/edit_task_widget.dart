@@ -17,6 +17,14 @@ class _EditTaskDialogueState extends State<EditTaskDialogue> {
   final taskController = TextEditingController();
   final descController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    taskController.dispose();
+    descController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

@@ -1,17 +1,16 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo_firebase/data/response/response.dart';
-import 'package:todo_firebase/model/user_model.dart';
-import 'package:todo_firebase/repository/authRepository/firebaseAuth/firebase_auth_repository.dart';
+import 'package:todo_firebase/repository/authRepository/firebase/firebase_auth_repository.dart';
+import 'package:todo_firebase/repository/storageRepository/firebase/firebase_storage_repository.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
 
 class AuthController extends ChangeNotifier {
-  final _repository = FirebaseAuthRepository();
+  final _authRepository = FirebaseAuthRepository();
+  final _storageRepository = FirebaseStorageRepository();
   final auth = FirebaseAuth.instance;
   Response _status = Response.completed;
   Response get status => _status;
@@ -29,7 +28,7 @@ class AuthController extends ChangeNotifier {
     BuildContext context,
   ) async {
     changeStatus(Response.loading);
-    await _repository
+    await _authRepository
         .register(
           email,
           password,
@@ -48,7 +47,7 @@ class AuthController extends ChangeNotifier {
   ) async {
     changeStatus(Response.loading);
 
-    await _repository.login(
+    await _authRepository.login(
       email,
       password,
       context,
@@ -58,11 +57,11 @@ class AuthController extends ChangeNotifier {
   }
 
   Future signinWithGoogle(BuildContext context) async {
-    await _repository.loginWithGoogle(context);
+    await _authRepository.loginWithGoogle(context);
   }
 
   Future logout(BuildContext context) async {
-    await _repository.logout(context);
+    await _authRepository.logout(context);
   }
 
   Future<File> pickImage() async {
@@ -75,34 +74,9 @@ class AuthController extends ChangeNotifier {
     }
   }
 
-  Future<String?> uploadImageToStorage(File image) async {
-    try {
-      Reference ref =
-          FirebaseStorage.instance.ref().child(auth.currentUser!.uid);
-      UploadTask uploadTask = ref.putFile(image);
-      await uploadTask;
-      return await ref.getDownloadURL();
-    } catch (e) {
-      Utils().showToast(e.toString());
-      return null;
-    }
-  }
-
   Future<void> saveUserData(File image, String userName, String email) async {
-    String imageUrl = await uploadImageToStorage(image) ?? '';
-    try {
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(auth.currentUser!.uid)
-          .set(
-            UserModel(
-              userName: userName,
-              email: email,
-              imageUrl: imageUrl,
-            ).toMap(),
-          );
-    } catch (e) {
-      print('Error saving URL to Firestore: $e');
-    }
+    String imageUrl =
+        await _storageRepository.uploadImageToStorage(image) ?? '';
+    await _storageRepository.storeUserData(image, userName, email, imageUrl);
   }
 }

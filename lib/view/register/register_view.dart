@@ -25,6 +25,15 @@ class _RegisterViewState extends State<RegisterView> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   File? profileImage;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authController = Provider.of<AuthController>(context, listen: false);
@@ -130,7 +139,8 @@ class _RegisterViewState extends State<RegisterView> {
                   child: CustomButton(
                     status: value.status,
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() &&
+                          profileImage != null) {
                         authController.register(
                           _emailController.text,
                           profileImage!,

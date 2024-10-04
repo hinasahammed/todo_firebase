@@ -19,7 +19,7 @@ class SplashServices {
               }
             } else {
               if (context.mounted) {
-                context.router.replace(const HomeView());
+                context.router.replace(const CustomNavigationBar());
               }
             }
           },

@@ -20,13 +20,21 @@ class _LoginViewState extends State<LoginView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authController = Provider.of<AuthController>(context, listen: false);
 
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(  
+      appBar: AppBar(
         title: const Text("Sign in"),
         centerTitle: true,
       ),

@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:provider/provider.dart';
 import 'package:todo_firebase/view/task/task_view.dart';
-import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 import 'package:todo_firebase/viewmodel/controller/home/home_controller.dart';
 
 @RoutePage()
@@ -18,20 +16,12 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final authController = Provider.of<AuthController>(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Home"),
-          actions: [
-            IconButton(
-              onPressed: () {
-                authController.logout(context);
-              },
-              icon: const Icon(Icons.logout),
-            ),
-          ],
+         
         ),
         body: SafeArea(
           child: Padding(

@@ -23,7 +23,7 @@ class FirebaseAuthRepository implements AuthRepository {
           .then(
         (value) {
           if (context.mounted) {
-            context.router.replaceNamed("/HomeView");
+            context.router.replace(CustomNavigationBar());
           }
           Utils().showToast("Login successfull");
         },
@@ -122,7 +122,7 @@ class FirebaseAuthRepository implements AuthRepository {
       await auth.signInWithCredential(cred).then(
         (value) {
           if (context.mounted) {
-            context.router.replaceNamed("/HomeView");
+            context.router.replace(CustomNavigationBar());
           }
           Utils().showToast("Login successfull");
         },
