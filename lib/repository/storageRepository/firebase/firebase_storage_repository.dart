@@ -26,7 +26,11 @@ class FirebaseStorageRepository implements StorageRepository {
 
   @override
   Future storeUserData(
-      File image, String userName, String email, String imageUrl) async {
+    File image,
+    String userName,
+    String email,
+    String imageUrl,
+  ) async {
     try {
       await FirebaseFirestore.instance
           .collection('Users')

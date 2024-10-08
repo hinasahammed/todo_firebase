@@ -62,7 +62,7 @@ class _ProfileViewState extends State<ProfileView> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: NetworkImage(user.imageUrl),
+                          image: NetworkImage(user.imageUrl??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwdIVSqaMsmZyDbr9mDPk06Nss404fosHjLg&s'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -70,13 +70,13 @@ class _ProfileViewState extends State<ProfileView> {
                   ),
                   Gap(40),
                   Text(
-                    user.userName.toUpperCase(),
+                    user.userName??'',
                     style: theme.textTheme.titleLarge!.copyWith(
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
                   Text(
-                    user.email.toUpperCase(),
+                    user.email??"",
                     style: theme.textTheme.labelLarge!.copyWith(
                       color: theme.colorScheme.onSurface.withOpacity(.5),
                     ),

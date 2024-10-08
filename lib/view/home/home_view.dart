@@ -48,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
                   isScrollable: true,
                   dividerColor: Colors.transparent,
                   tabs: [
-                    Tab(
+                    Tab( 
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         child: const Text("All"),
