@@ -11,5 +11,6 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: HomeView.page, path: "/${HomeView.name}"),
         AutoRoute(page: CustomNavigationBar.page),
         AutoRoute(page: ProfileView.page),
+        AutoRoute(page: PhoneAuthView.page),
       ];
 }

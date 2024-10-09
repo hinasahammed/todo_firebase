@@ -108,6 +108,17 @@ class _LoginViewState extends State<LoginView> {
                   },
                 ),
               ),
+              const Gap(10),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: CustomButton(
+                  onPressed: () {
+                    context.router.push(PhoneAuthView());
+                  },
+                  btnText: "Continue with phone number",
+                ),
+              ),
               const Gap(50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
