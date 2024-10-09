@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_firebase/res/components/constants/custom_button.dart';
 import 'package:todo_firebase/res/components/constants/custom_textformfield.dart';
-import 'package:todo_firebase/res/routes/app_router.gr.dart';
-import 'package:todo_firebase/view/otpVerification/otp_verification_view.dart';
+import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 
 @RoutePage()
 class PhoneAuthView extends StatefulWidget {
@@ -19,6 +20,7 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
   final auth = FirebaseAuth.instance;
 
   final _phoneNumberController = TextEditingController();
+  String countryCode = '';
 
   @override
   void dispose() {
@@ -26,32 +28,10 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
     _phoneNumberController.dispose();
   }
 
-  phoneAuth() async {
-    auth.verifyPhoneNumber(
-      phoneNumber: _phoneNumberController.text,
-      verificationCompleted: (phoneAuthCredential) {
-        auth.signInWithCredential(phoneAuthCredential);
-        context.router.push(CustomNavigationBar());
-      },
-      verificationFailed: (error) {
-        print(error);
-      },
-      codeSent: (verificationId, forceResendingToken) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (ctx) => OtpVerificationView(
-                    phoneNumber: _phoneNumberController.text,
-                    verificatoionId: verificationId)));
-      },
-      codeAutoRetrievalTimeout: (verificationId) {},
-      timeout: Duration(seconds: 60),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final authController = Provider.of<AuthController>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -75,9 +55,38 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
               textAlign: TextAlign.center,
             ),
             Gap(20),
-            CustomTextFormfield(
-              controller: _phoneNumberController,
-              fieldName: "Enter mobile number",
+            Row(
+              children: [
+                SizedBox(
+                  width: 55,
+                  height: 60,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: theme.colorScheme.onSurface.withOpacity(.5)),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: CountryCodePicker(
+                      alignLeft: true,
+                      showFlag: false,
+                      padding: EdgeInsets.zero,
+                      initialSelection: "+91",
+                      onChanged: (value) {
+                        setState(() {
+                          countryCode = value.code!;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Gap(5),
+                Expanded(
+                  child: CustomTextFormfield(
+                    controller: _phoneNumberController,
+                    fieldName: "Enter mobile number",
+                  ),
+                ),
+              ],
             ),
             Gap(20),
             SizedBox(
@@ -85,7 +94,7 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
               height: 50,
               child: CustomButton(
                 onPressed: () {
-                  phoneAuth();
+                  authController.getOtp(context, _phoneNumberController.text);
                 },
                 btnText: "Get Otp",
               ),

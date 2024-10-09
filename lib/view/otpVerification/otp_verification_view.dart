@@ -1,10 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_firebase/res/components/constants/custom_button.dart';
 import 'package:todo_firebase/res/components/constants/custom_textformfield.dart';
-import 'package:todo_firebase/res/routes/app_router.gr.dart';
+import 'package:todo_firebase/viewmodel/controller/auth/auth_controller.dart';
 
 class OtpVerificationView extends StatefulWidget {
   final String phoneNumber;
@@ -20,18 +20,10 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
   final auth = FirebaseAuth.instance;
   final _otpController = TextEditingController();
 
-  verifyOtp() async {
-    final credential = PhoneAuthProvider.credential(
-        verificationId: widget.verificatoionId, smsCode: _otpController.text);
-
-    auth.signInWithCredential(credential);
-    context.router.push(CustomNavigationBar());
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    final authController = Provider.of<AuthController>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
@@ -58,9 +50,14 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
               controller: _otpController,
               fieldName: "OTP",
             ),
+            Gap(20),
             CustomButton(
                 onPressed: () {
-                  verifyOtp();
+                  authController.verifyOtp(
+                    context,
+                    widget.verificatoionId,
+                    _otpController.text,
+                  );
                 },
                 btnText: "Verify")
           ],

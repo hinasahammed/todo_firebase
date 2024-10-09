@@ -8,4 +8,8 @@ abstract class AuthRepository {
   Future<void> logout(BuildContext context);
 
   Future loginWithGoogle(BuildContext context);
+
+  Future loginWithPhone(BuildContext context,String phoneNumber);
+
+  Future verifyOtp(BuildContext context,String verificationId,String smsCode);
 }

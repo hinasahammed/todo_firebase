@@ -64,6 +64,15 @@ class AuthController extends ChangeNotifier {
     await _authRepository.logout(context);
   }
 
+  Future getOtp(BuildContext context, String phoneNumber) async {
+    _authRepository.loginWithPhone(context, phoneNumber);
+  }
+
+  Future verifyOtp(
+      BuildContext context, String verificationId, String smsCode) async {
+    _authRepository.verifyOtp(context, verificationId, smsCode);
+  }
+
   Future<File> pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (picked == null) {

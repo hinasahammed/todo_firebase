@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_firebase/repository/authRepository/auth_repository.dart';
 import 'package:todo_firebase/res/routes/app_router.gr.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
+import 'package:todo_firebase/view/otpVerification/otp_verification_view.dart';
 
 class FirebaseAuthRepository implements AuthRepository {
   final auth = FirebaseAuth.instance;
@@ -125,6 +126,50 @@ class FirebaseAuthRepository implements AuthRepository {
             context.router.replace(CustomNavigationBar());
           }
           Utils().showToast("Login successfull");
+        },
+      );
+    } catch (e) {
+      Utils().showToast(e.toString());
+    }
+  }
+
+  @override
+  Future loginWithPhone(BuildContext context, String phoneNumber) async {
+    try {
+      await auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (phoneAuthCredential) {},
+        verificationFailed: (error) {},
+        codeSent: (verificationId, forceResendingToken) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => OtpVerificationView(
+                phoneNumber: phoneNumber,
+                verificatoionId: verificationId,
+              ),
+            ),
+          );
+        },
+        codeAutoRetrievalTimeout: (verificationId) {},
+        timeout: Duration(seconds: 60),
+      );
+    } on FirebaseAuthException catch (e) {
+      Utils().showToast(e.code);
+    }
+  }
+
+  @override
+  Future verifyOtp(
+      BuildContext context, String verificationId, String smsCode) async {
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId, smsCode: smsCode);
+      await auth.signInWithCredential(credential).then(
+        (value) {
+          if (context.mounted) {
+            context.router.replace(CustomNavigationBar());
+          }
         },
       );
     } catch (e) {
