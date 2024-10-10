@@ -25,6 +25,15 @@ class _ProfileViewState extends State<ProfileView> {
     final authController = Provider.of<AuthController>(context, listen: false);
 
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+              },
+              icon: Icon(Icons.logout))
+        ],
+      ),
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.all(16),
@@ -34,18 +43,26 @@ class _ProfileViewState extends State<ProfileView> {
               .doc(auth.currentUser!.uid)
               .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.data == null ||
-                !snapshot.hasData ||
-                snapshot.data!.data()!.isEmpty) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Text("Something went wrong!"),
+                child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasError) {
               return Center(
                 child: Text("Something went wrong!"),
               );
+            } else if (!snapshot.hasData || !snapshot.data!.exists) {
+              return Center(
+                child: Text("No user data found."),
+              );
             } else {
-              final user = UserModel.fromMap(snapshot.data!.data()!);
+              final data = snapshot.data!.data();
+              if (data == null || data.isEmpty) {
+                return Center(
+                  child: Text("User data is empty."),
+                );
+              }
+              final user = UserModel.fromMap(data);
               return Column(
                 children: [
                   Gap(30),
@@ -62,7 +79,8 @@ class _ProfileViewState extends State<ProfileView> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: NetworkImage(user.imageUrl??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwdIVSqaMsmZyDbr9mDPk06Nss404fosHjLg&s'),
+                          image: NetworkImage(user.imageUrl ??
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwdIVSqaMsmZyDbr9mDPk06Nss404fosHjLg&s'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -70,13 +88,13 @@ class _ProfileViewState extends State<ProfileView> {
                   ),
                   Gap(40),
                   Text(
-                    user.userName??'',
+                    user.userName ?? '',
                     style: theme.textTheme.titleLarge!.copyWith(
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
                   Text(
-                    user.email??"",
+                    user.email ?? "",
                     style: theme.textTheme.labelLarge!.copyWith(
                       color: theme.colorScheme.onSurface.withOpacity(.5),
                     ),

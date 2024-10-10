@@ -20,7 +20,7 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
   final auth = FirebaseAuth.instance;
 
   final _phoneNumberController = TextEditingController();
-  String countryCode = '';
+  String countryCode = '+91';
 
   @override
   void dispose() {
@@ -59,7 +59,7 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
               children: [
                 SizedBox(
                   width: 55,
-                  height: 60,
+                  height: 50,
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -94,7 +94,15 @@ class _PhoneAuthViewState extends State<PhoneAuthView> {
               height: 50,
               child: CustomButton(
                 onPressed: () {
-                  authController.getOtp(context, _phoneNumberController.text);
+                  authController.getOtp(
+                      context, countryCode + _phoneNumberController.text);
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => OtpVerificationView(
+                  //           phoneNumber: _phoneNumberController.text,
+                  //           verificatoionId: ''),
+                  //     ));
                 },
                 btnText: "Get Otp",
               ),

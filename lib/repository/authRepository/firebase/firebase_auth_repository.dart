@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +141,11 @@ class FirebaseAuthRepository implements AuthRepository {
       await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (phoneAuthCredential) {},
-        verificationFailed: (error) {},
+        verificationFailed: (error) {
+          log("Verification failed: ${error.message}");
+          Utils()
+              .showToast("Phone verification failed. Error: ${error.message}");
+        },
         codeSent: (verificationId, forceResendingToken) {
           Navigator.push(
             context,
@@ -155,6 +161,7 @@ class FirebaseAuthRepository implements AuthRepository {
         timeout: Duration(seconds: 60),
       );
     } on FirebaseAuthException catch (e) {
+      log(e.toString());
       Utils().showToast(e.code);
     }
   }
@@ -168,7 +175,7 @@ class FirebaseAuthRepository implements AuthRepository {
       await auth.signInWithCredential(credential).then(
         (value) {
           if (context.mounted) {
-            context.router.replace(CustomNavigationBar());
+            context.router.replaceNamed("/${CustomNavigationBar.name}");
           }
         },
       );

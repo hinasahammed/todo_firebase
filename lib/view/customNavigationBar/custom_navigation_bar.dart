@@ -13,7 +13,8 @@ class CustomNavigationBar extends StatefulWidget {
 
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   int _currentIndex = 0;
-  
+ 
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
