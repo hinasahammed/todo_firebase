@@ -130,6 +130,10 @@ class FirebaseAuthRepository implements AuthRepository {
           Utils().showToast("Login successfull");
         },
       );
+
+      final user = auth.currentUser;
+      print("photo url ${user!.displayName!}");
+      print("photo url ${user.photoURL!}");
     } catch (e) {
       Utils().showToast(e.toString());
     }
