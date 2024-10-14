@@ -86,6 +86,6 @@ class AuthController extends ChangeNotifier {
   Future<void> saveUserData(File image, String userName, String email) async {
     String imageUrl =
         await _storageRepository.uploadImageToStorage(image) ?? '';
-    await _storageRepository.storeUserData(image, userName, email, imageUrl);
+    await _storageRepository.storeUserData(userName, email, imageUrl);
   }
 }
