@@ -74,11 +74,11 @@ class AuthController extends ChangeNotifier {
     _authRepository.verifyOtp(context, verificationId, smsCode);
   }
 
-  Future<File> pickImage() async {
+  Future<File?> pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (picked == null) {
       Utils().showToast("You have to select image");
-      return File('');
+      return null;
     } else {
       return File(picked.path);
     }
