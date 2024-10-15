@@ -5,15 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_firebase/repository/authRepository/auth_repository.dart';
-import 'package:todo_firebase/repository/storageRepository/firebase/firebase_storage_repository.dart';
 import 'package:todo_firebase/res/routes/app_router.gr.dart';
 import 'package:todo_firebase/res/utils/utils.dart';
 import 'package:todo_firebase/view/otpVerification/otp_verification_view.dart';
 
+final auth = FirebaseAuth.instance;
+
 class FirebaseAuthRepository implements AuthRepository {
-  final auth = FirebaseAuth.instance;
-  final user = FirebaseAuth.instance.currentUser;
-  final _repository = FirebaseStorageRepository();
   @override
   Future<void> login(
     String email,
@@ -126,24 +124,12 @@ class FirebaseAuthRepository implements AuthRepository {
       );
       log("1");
 
-      final userCredential = await auth.signInWithCredential(cred);
-      final currentUser = userCredential.user;
-      if (currentUser != null) {
-        await _repository
-            .storeUserData(
-          currentUser.displayName ?? 'Unknown User',
-          currentUser.email ?? '',
-          currentUser.photoURL ?? "",
-        )
-            .then(
-          (value) {
-            if (context.mounted) {
-              context.router.replace(CustomNavigationBar());
-            }
-            Utils().showToast("Login successfull");
-          },
-        );
-      }
+      await auth.signInWithCredential(cred).then((value) {
+        if (context.mounted) {
+          context.router.replace(CustomNavigationBar());
+        }
+        Utils().showToast("Login successful");
+      });
     } catch (e) {
       Utils().showToast(e.toString());
     }

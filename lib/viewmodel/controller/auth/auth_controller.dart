@@ -58,6 +58,7 @@ class AuthController extends ChangeNotifier {
 
   Future signinWithGoogle(BuildContext context) async {
     await _authRepository.loginWithGoogle(context);
+    await _storageRepository.storeGoogleUserData();
   }
 
   Future logout(BuildContext context) async {
