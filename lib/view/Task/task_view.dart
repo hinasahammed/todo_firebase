@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:todo_firebase/gen/assets.gen.dart';
@@ -21,9 +22,15 @@ class _TaskViewState extends State<TaskView> {
     final theme = Theme.of(context);
     return StreamBuilder(
       stream: widget.type == "All"
-          ? FirebaseFirestore.instance.collection("todo").snapshots()
+          ? FirebaseFirestore.instance
+              .collection("todo")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection("Todos")
+              .snapshots()
           : FirebaseFirestore.instance
               .collection("todo")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection("Todos")
               .where("status", isEqualTo: widget.type)
               .snapshots(),
       builder: (context, snapshot) {

@@ -20,7 +20,7 @@ class _HomeViewState extends State<HomeView> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Home"),
+          title: const Text("Hello"),
           automaticallyImplyLeading: false,
         ),
         body: SafeArea(
@@ -29,14 +29,6 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Hello,",
-                  style: theme.textTheme.titleLarge!.copyWith(
-                    color: theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const Gap(5),
                 Text(
                   "Look at your task",
                   style: theme.textTheme.bodyLarge!.copyWith(

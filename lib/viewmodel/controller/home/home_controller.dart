@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_firebase/data/response/response.dart';
@@ -48,8 +49,7 @@ class HomeController extends ChangeNotifier {
       lastDate: DateTime(2030),
     );
     if (selectDate == null) {
-        Utils().showToast("Select a date");
-      
+      Utils().showToast("Select a date");
     } else {
       _selectedDate = selectDate;
       notifyListeners();
@@ -61,6 +61,8 @@ class HomeController extends ChangeNotifier {
     try {
       await firestore
           .collection("todo")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("Todos")
           .doc()
           .set(TaskModel(
             taskName: taskName,
@@ -80,8 +82,7 @@ class HomeController extends ChangeNotifier {
     } catch (e) {
       changeStatus(Response.error);
 
-        Utils().showToast(e.toString());
-      
+      Utils().showToast(e.toString());
     }
   }
 
@@ -92,8 +93,7 @@ class HomeController extends ChangeNotifier {
         "isCompleted": newValue,
       });
     } catch (e) {
-        Utils().showToast(e.toString());
-     
+      Utils().showToast(e.toString());
     }
   }
 
@@ -119,8 +119,7 @@ class HomeController extends ChangeNotifier {
       );
     } catch (e) {
       changeStatus(Response.error);
-        Utils().showToast(e.toString());
-     
+      Utils().showToast(e.toString());
     }
   }
 
@@ -156,11 +155,15 @@ class HomeController extends ChangeNotifier {
   ) async {
     changeStatus(Response.loading);
     try {
-      await firestore.collection("todo").doc(docId).delete();
+      await firestore
+          .collection("todo")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("Todos")
+          .doc(docId)
+          .delete();
     } catch (e) {
       changeStatus(Response.error);
-        Utils().showToast(e.toString());
-      
+      Utils().showToast(e.toString());
     }
   }
 
@@ -171,11 +174,12 @@ class HomeController extends ChangeNotifier {
     try {
       await firestore
           .collection("todo")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("Todos")
           .doc(docId)
           .update({"status": "completed"});
     } catch (e) {
-        Utils().showToast(e.toString());
-      
+      Utils().showToast(e.toString());
     }
   }
 }
